@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:5.7
+    container_name: mysql_c_dc
+    restart: always
+    volumes:
+      - db-volume_dc:/var/lib/mysql
+      - ./article.sql:/docker-entrypoint-inidb.d/article.sql
+    environment:
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+  app:
+    image: myapp_lamp
+    container_name: myapp_c_dc
+    restart: always
+    volumes:
+      - ./app:/var/www/html
+    ports:
+      - 1111:80
+    depends_on:
+      - db
+
+volumes:
+  db-volume_dc:
